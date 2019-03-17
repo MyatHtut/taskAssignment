@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Events\TaskEvent;
-use App\Mail\TaskMail;
 use App\Prioritiy;
 use App\Task;
 use App\TaskType;
@@ -11,9 +10,6 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
-use Nexmo\Response;
 
 class TaskController extends Controller
 {
@@ -57,10 +53,10 @@ class TaskController extends Controller
     function edit($id)
     {
         $task = Task::findOrfail($id);
-//        dd( $task->assignedTo->email);
         $taskTypes = TaskType::all();
         $priorities = Prioritiy::all();
         $users = User::all();
+
         $date = explode(" ", $task->due_date);
         $setReminder=$task->set_reminder!==null?explode(" ", $task->due_date):[];
         return view('tasks.edit', compact('taskTypes', 'priorities', 'users', 'task', 'date','setReminder'));
